@@ -1,12 +1,13 @@
-﻿string titulo = " MENU PRINCIPAL ";
+﻿using Banco;
+
+string titulo = " MENU PRINCIPAL ";
 bool continuar = true;
+int largura = 35;
+GerenciadorDeContas gerenciador = new();
 
 while (continuar)
 {
-    int largura = 35;
-    Console.WriteLine(new string('=', largura));
-    Console.WriteLine(titulo.PadLeft((largura + titulo.Length) / 2).PadRight(largura));
-    Console.WriteLine(new string('=', largura));
+    Utils.Cabecalho(titulo);
     Console.WriteLine(new string('-', largura));
     Console.WriteLine($"| {"1. Criar nova conta bancária".PadRight(largura - 4)} |");
     Console.WriteLine($"| {"2. Listar contas existentes".PadRight(largura - 4)} |");
@@ -20,15 +21,18 @@ while (continuar)
 
     switch (opcao)
     {
+        case "1":
+            gerenciador.CriarConta();
+            Utils.VoltarAoMenu();
+            break;
+
+        case "2":
+            gerenciador.ListarContas();
+            Utils.VoltarAoMenu();
+            break;
         default:
             Console.WriteLine("\nOpção inválida!");
-            VoltarAoMenu();
+            Utils.VoltarAoMenu();
             break;
     }
-}
-static void VoltarAoMenu()
-{
-    Console.Write("\nPressione qualquer botão para voltar ao menu...");
-    Console.ReadKey();
-    Console.Clear();
 }

@@ -10,20 +10,18 @@ namespace Banco
     internal class Conta
     {
         public int NumeroDaConta { get; }
+
         private static readonly Random rmd = new();
 
-        //Conjunto de números aleatorios gerados.
         private static readonly HashSet<int> contasGeradas = new();
         public string Nome { get; }
 
         public TipoDeConta TipoDeConta { get; }
 
         private readonly decimal saldoInicial;
-        public decimal SaldoInicial => saldoInicial;
-
         public decimal Saldo { get; private set; }
 
-        internal Conta(string nome, TipoDeConta tipoDeConta)
+        internal Conta(string nome, TipoDeConta tipo)
         {
 
             if (string.IsNullOrWhiteSpace(nome))
@@ -33,20 +31,18 @@ namespace Banco
 
             NumeroDaConta = GerarContaAleatoria();
             Nome = nome;
-            TipoDeConta = tipoDeConta;
-            saldoInicial = ObterSaldoInicial(tipoDeConta);
+            TipoDeConta = tipo;
+            saldoInicial = DefinirSaldoInicialDaConta(tipo);
             Saldo = saldoInicial;
 
         }
-
-        //Valida qual o tipo de conta na hora da criação para atribuir o valor corretamente
-        private static decimal ObterSaldoInicial(TipoDeConta tipoDeConta)
+        private static decimal DefinirSaldoInicialDaConta(TipoDeConta tipo)
         {
-            if (tipoDeConta == TipoDeConta.Poupança)
+            if (tipo == TipoDeConta.Poupança)
             {
                 return 100m;
             }
-            else if (tipoDeConta == TipoDeConta.Corrente)
+            else if (tipo == TipoDeConta.Corrente)
             {
                 return 50m;
             }
