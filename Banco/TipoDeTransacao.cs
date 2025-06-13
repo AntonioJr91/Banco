@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Banco
 {
-    internal enum Transacao
+    internal enum TipoDeTransacao
     {
         Depositar,
-        Saca
+        Sacar
     }
 }

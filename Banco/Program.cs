@@ -21,6 +21,10 @@ while (continuar)
 
     switch (opcao)
     {
+        case "0":
+            continuar = false;
+            Console.WriteLine("\nPrograma encerrado.");
+            break;
         case "1":
             gerenciador.CriarConta();
             Utils.VoltarAoMenu();
@@ -30,6 +34,17 @@ while (continuar)
             gerenciador.ListarContas();
             Utils.VoltarAoMenu();
             break;
+
+        case "3":
+            gerenciador.BuscarContaPorNumero();
+            Utils.VoltarAoMenu();
+            break;
+
+        case "4":
+            gerenciador.Transacoes();
+            Utils.VoltarAoMenu();
+            break;
+
         default:
             Console.WriteLine("\nOpção inválida!");
             Utils.VoltarAoMenu();

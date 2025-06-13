@@ -20,7 +20,6 @@ namespace Banco
 
         private readonly decimal saldoInicial;
         public decimal Saldo { get; private set; }
-
         internal Conta(string nome, TipoDeConta tipo)
         {
 
@@ -71,6 +70,28 @@ namespace Banco
 
             contasGeradas.Add(novaConta);
             return novaConta;
+        }
+        public void Deposito(decimal valor)
+        {
+            if (valor > 0)
+            {
+                Saldo += valor;
+            }else
+            {
+                Console.WriteLine("\nValor incorreto. Tente novamente.");
+                return;
+            }
+        }
+        public void Saque(decimal valor)
+        {
+            if (Saldo >= valor)
+            {
+                Saldo -= valor;
+            }else
+            {
+                Console.WriteLine("\nVocê não tem saldo suficiente para realizar este saque.");
+                return;
+            }
         }
     }
 }

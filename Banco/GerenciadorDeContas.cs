@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,24 +34,78 @@ namespace Banco
             }
             else
             {
-                throw new ArgumentException("Tipo de conta inválido.");
+                Console.WriteLine("\nTipo de conta inválido.");
             }
         }
-
         internal void ListarContas()
         {
             Console.Clear();
             Utils.Cabecalho(" Lista de contas ");
 
-            Console.WriteLine("{0,-20} | {1,-15} | {2,-12} | {3,-12}", "Nome do titular", "Número da conta", "Tipo de conta", "Saldo");
+            Utils.ExibirCabecalhoContas();
             foreach (Conta conta in contas)
             {
-                Console.WriteLine("{0,-20} | {1,-15} | {2,-13} | {3,-12}",
-                    conta.Nome,
-                    conta.NumeroDaConta,
-                    conta.TipoDeConta,
-                    conta.Saldo.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))
-                );
+                Utils.ExibirLinhaConta(conta);
+            }
+        }
+        internal void BuscarContaPorNumero()
+        {
+            Console.Clear();
+            Utils.Cabecalho(" Buscar conta pelo número ");
+
+            Console.Write("Digite o número da conta que deseja buscar: ");
+            int numeroDaConta = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine();
+
+            Conta contaExiste = Utils.ValidaNumeroDaConta(contas, numeroDaConta);
+
+            if (contaExiste != null)
+            {
+                Utils.ExibirCabecalhoContas();
+                Utils.ExibirLinhaConta(contaExiste);
+            }
+            else
+            {
+                Utils.VoltarAoMenu();
+            }
+        }
+        internal void Transacoes()
+        {
+            Console.Clear();
+            Utils.Cabecalho(" Transações ");
+
+            bool continuar = true;
+            while (continuar)
+            {
+                Console.WriteLine("Qual transação gostaria de efetuar?\n");
+                Console.WriteLine("1. Depósito");
+                Console.WriteLine("2. Saque");
+                Console.WriteLine("0. Sair");
+                Console.Write("\nEscolha uma opção: ");
+                string opcao = Console.ReadLine();
+
+                switch (opcao)
+                {
+
+                    case "0":
+                        continuar = false;
+                        break;
+
+                    case "1":
+                        RealizarTransacao(TipoDeTransacao.Depositar);
+                        Utils.VoltarAoMenu();
+                        break;
+
+                    case "2":
+                        RealizarTransacao(TipoDeTransacao.Sacar);
+                        Utils.VoltarAoMenu();
+                        break;
+
+                    default:
+                        Console.WriteLine("\nOpção inválida!");
+                        Utils.VoltarAoMenu();
+                        break;
+                }
             }
         }
         private static string ObterNomeValido(string? nome)
@@ -68,6 +123,12 @@ namespace Banco
         private static TipoDeConta ConversaoDeTipo(int tipoDeConta)
         {
             return (TipoDeConta)tipoDeConta;
+        }
+        private void RealizarTransacao(TipoDeTransacao operacao)
+        {
+            Console.Clear();
+            Utils.Cabecalho(operacao == TipoDeTransacao.Depositar ? "Transação de Depósito" : "Transação de Saque");
+            Utils.Transacao(contas, operacao);
         }
     }
 }
