@@ -13,7 +13,7 @@ while (continuar)
     Console.WriteLine($"| {"2. Listar contas existentes".PadRight(largura - 4)} |");
     Console.WriteLine($"| {"3. Buscar conta por número".PadRight(largura - 4)} |");
     Console.WriteLine($"| {"4. Transações (Depósito/Saque)".PadRight(largura - 4)} |");
-    Console.WriteLine($"| {"5. Transferência entre contas".PadRight(largura - 4)} |");
+    Console.WriteLine($"| {"5. Transferência".PadRight(largura - 4)} |");
     Console.WriteLine($"| {"0. Sair".PadRight(largura - 4)} |");
     Console.WriteLine(new string('-', largura));
     Console.Write("Escolha uma opção: ");
@@ -25,6 +25,7 @@ while (continuar)
             continuar = false;
             Console.WriteLine("\nPrograma encerrado.");
             break;
+
         case "1":
             gerenciador.CriarConta();
             Utils.VoltarAoMenu();
@@ -42,6 +43,11 @@ while (continuar)
 
         case "4":
             gerenciador.Transacoes();
+            Utils.VoltarAoMenu();
+            break;
+
+        case "5":
+            gerenciador.Transferencia();
             Utils.VoltarAoMenu();
             break;
 

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Xml.Schema;
 
 namespace Banco
 {
@@ -23,67 +18,34 @@ namespace Banco
             Console.WriteLine(new string('=', largura));
             Console.WriteLine();
         }
-
         public static void ExibirCabecalhoContas()
         {
-            Console.WriteLine("{0,-20} | {1,-15} | {2,-12} | {3,-12}", "Nome do titular", "Número da conta", "Tipo de conta", "Saldo");
+            Console.WriteLine("{0,-20} | {1,-15} | {2,-15} | {3,-11}", "Nome do titular", "Número da conta", "Tipo de conta", "Saldo");
         }
         public static void ExibirLinhaConta(Conta conta)
         {
-            Console.WriteLine("{0,-20} | {1,-15} | {2,-12} | {3,-12}",
+            Console.WriteLine("{0,-20} | {1,-15} | {2,-15} | {3,-11}",
              conta.Nome,
              conta.NumeroDaConta,
              conta.TipoDeConta,
              conta.Saldo.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"))
              );
         }
-        public static Conta ValidaNumeroDaConta(List<Conta> contas, int numeroDaConta)
+        public static decimal ConverteParaDecimalPtBr(string? valorInput)
         {
-            Conta? contaExiste = contas.Find(conta => conta.NumeroDaConta == numeroDaConta);
-
-            if (contaExiste == null)
-            {
-                Console.WriteLine("\nConta não encontrada! Verifique o número e tente novamente.");
-            }
-            return contaExiste;
+            valorInput = valorInput?.Replace('.', ',');
+            decimal valor = Convert.ToDecimal(valorInput, new CultureInfo("pt-BR"));
+            return valor;
         }
-        public static void Transacao(List<Conta> contas, TipoDeTransacao operacao)
+        public static bool ValorEhValido(decimal valor)
         {
-            Console.Write("Digite o número da conta: ");
-            int numeroDaConta = Convert.ToInt32(Console.ReadLine());
-
-            Conta conta = Utils.ValidaNumeroDaConta(contas, numeroDaConta);
-
-            if (conta != null)
+            if (valor > 0)
             {
-                Console.Write("\nInforme o valor: ");
-                string valorInput = Console.ReadLine();
-                valorInput = valorInput.Replace('.', ',');
-                decimal valor = Convert.ToDecimal(valorInput, new CultureInfo("pt-BR"));
-
-
-                if (operacao == TipoDeTransacao.Depositar)
-                {
-                    conta.Deposito(valor);
-                    Console.WriteLine($"\nDepósito no valor de {valor.ToString("C")} efetudo com sucesso!");
-                }
-                else if (operacao == TipoDeTransacao.Sacar)
-                {
-                    if (conta.Saldo >= valor)
-                    {
-                        conta.Saque(valor);
-                        Console.WriteLine($"\nSaque no valor de {valor.ToString("C")} efetuado com sucesso!");
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nSaldo insuficiente para realizar o saque.");
-                    }
-                }
-            }
-            else
+                return true;
+            } else
             {
-                Console.WriteLine("Houve algum problema na transação.");
-                return;
+                Console.WriteLine("\nValor inválido!");
+                return false;
             }
         }
     }
